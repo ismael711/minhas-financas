@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minhas Finanças - Controle Financeiro Pessoal</title>
+  <meta name="description" content="Aplicação de controle financeiro pessoal sincronizada na nuvem com Firebase. Organização por períodos do dia 15 e dia 31 com ajuste automático de finais de semana.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ====================================================================
+       TELA DE AUTENTICAÇÃO (LOGIN / CADASTRO)
+       ==================================================================== -->
+  <div id="auth-container" class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-brand">
+          <span>💚</span> Minhas Finanças
+        </div>
+        <p class="auth-subtitle">Seu controle financeiro simples e na nuvem</p>
+      </div>
+
+      <!-- Abas para chavear entre Login e Cadastro -->
+      <div class="auth-tabs">
+        <button id="tab-login-btn" class="auth-tab-btn active" type="button">Login</button>
+        <button id="tab-signup-btn" class="auth-tab-btn" type="button">Cadastrar</button>
+      </div>
+
+      <!-- Alerta para mensagens de erro/sucesso -->
+      <div id="auth-alert" class="alert-message alert-danger hidden"></div>
+
+      <!-- Formulário de Autenticação -->
+      <form id="auth-form" autocomplete="on">
+        <h2 id="auth-title" style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-main);">Acessar Conta</h2>
+        
+        <div class="form-group">
+          <label for="email-input">E-mail</label>
+          <input type="email" id="email-input" class="form-control" placeholder="seu@email.com" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label for="password-input">Senha</label>
+          <input type="password" id="password-input" class="form-control" placeholder="••••••••" required autocomplete="current-password" minlength="6">
+        </div>
+
+        <button type="submit" id="auth-submit-btn" class="btn-primary">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       DASHBOARD FINANCEIRO PRINCIPAL (SÓ EXIBIDO QUANDO AUTENTICADO)
+       ==================================================================== -->
+  <div id="app-container" class="app-viewport hidden">
+    
+    <!-- Cabeçalho do App -->
+    <header class="app-header">
+      <div class="header-brand">
+        <span>💚</span> Minhas Finanças
+      </div>
+
+      <div class="header-actions">
+        <span id="sync-badge" class="sync-badge synced">✓ Sincronizado</span>
+        <span id="user-email-display" class="user-info">usuario@email.com</span>
+        <button id="btn-logout" class="btn-logout" type="button">Sair</button>
+      </div>
+    </header>
+
+    <!-- Navegação de Abas dos Meses -->
+    <nav class="month-nav-container">
+      <div id="month-tabs-container" class="month-tabs-scroll">
+        <!-- Abas renderizadas dinamicamente pelo JS -->
+      </div>
+      <button id="btn-add-month" class="btn-add-month" type="button" title="Adicionar próximo mês">+ Novo Mês</button>
+    </nav>
+
+    <!-- Resumo Consolidado do Mês Selecionado -->
+    <section class="month-summary-banner">
+      <div class="summary-card">
+        <div class="summary-label">Entradas do Mês</div>
+        <div id="month-entradas-total" class="summary-value text-success">R$ 0,00</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">Saídas do Mês</div>
+        <div id="month-saidas-total" class="summary-value text-danger">R$ 0,00</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">Saldo do Mês</div>
+        <div id="month-saldo-total" class="summary-value">R$ 0,00</div>
+      </div>
+    </section>
+
+    <!-- Períodos (Dia 15 e Dia 31) -->
+    <main class="periods-grid">
+      <!-- Card do Período 15 -->
+      <article id="period-15-card" class="period-card">
+        <!-- Renderizado dinamicamente via JS -->
+      </article>
+
+      <!-- Card do Período 31 -->
+      <article id="period-31-card" class="period-card">
+        <!-- Renderizado dinamicamente via JS -->
+      </article>
+    </main>
+
+  </div>
+
+  <!-- Scripts JavaScript (Módulo ES6) -->
+  <script type="module" src="js/app.js"></script>
+
+</body>
+</html>
