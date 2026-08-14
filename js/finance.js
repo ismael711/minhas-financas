@@ -60,18 +60,28 @@ export function getNextMonthId(monthId) {
 
 /**
  * Ajusta automaticamente a data de vencimento se cair em final de semana.
+ * As datas de cada mês de referência correspondem ao mês ANTERIOR (ex.: para Setembro/2026,
+ * as datas de vencimento/recebimento são 15/08/2026 e 31/08/2026).
  * Se cair no Sábado (dia 6) ou Domingo (dia 0), ajusta para a Sexta-feira anterior.
  * 
- * @param {number} year 
- * @param {number} month (1 a 12)
+ * @param {number} targetYear Ano do mês de referência (ex: 2026)
+ * @param {number} targetMonth Mês de referência (1 a 12, ex: 9 para Setembro)
  * @param {number} targetPeriodDay (15 ou 31)
  */
-export function adjustDateForWeekend(year, month, targetPeriodDay) {
-  // Se for o período do dia 31, obtém o último dia do mês corrente (ex.: 28, 30 ou 31)
-  const lastDayOfMonth = new Date(year, month, 0).getDate();
+export function adjustDateForWeekend(targetYear, targetMonth, targetPeriodDay) {
+  // O período financeiro utiliza o mês anterior ao mês de referência
+  let calcMonth = targetMonth - 1;
+  let calcYear = targetYear;
+  if (calcMonth < 1) {
+    calcMonth = 12;
+    calcYear -= 1;
+  }
+
+  // Obtém o último dia do mês anterior (ex.: 28, 30 ou 31)
+  const lastDayOfMonth = new Date(calcYear, calcMonth, 0).getDate();
   const baseDay = targetPeriodDay === 31 ? lastDayOfMonth : targetPeriodDay;
   
-  const baseDate = new Date(year, month - 1, baseDay);
+  const baseDate = new Date(calcYear, calcMonth - 1, baseDay);
   const dayOfWeek = baseDate.getDay(); // 0: Domingo, 6: Sábado
 
   let adjustedDay = baseDay;
@@ -86,13 +96,13 @@ export function adjustDateForWeekend(year, month, targetPeriodDay) {
     isAdjusted = true;
   }
 
-  const finalDate = new Date(year, month - 1, adjustedDay);
+  const finalDate = new Date(calcYear, calcMonth - 1, adjustedDay);
   const finalDayOfWeek = finalDate.getDay();
   const finalDayName = DIAS_DA_SEMANA[finalDayOfWeek];
 
   const pad = (n) => String(n).padStart(2, '0');
-  const dateFormatted = `${pad(adjustedDay)}/${pad(month)}/${year}`;
-  const originalDateFormatted = `${pad(baseDay)}/${pad(month)}/${year}`;
+  const dateFormatted = `${pad(adjustedDay)}/${pad(calcMonth)}/${calcYear}`;
+  const originalDateFormatted = `${pad(baseDay)}/${pad(calcMonth)}/${calcYear}`;
 
   return {
     dateFormatted,
